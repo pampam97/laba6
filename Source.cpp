@@ -1,34 +1,33 @@
-#pragma once
-#pragma once
 #include<iostream>
 #include<string>
+#include<conio.h>
 
 using namespace std;
 
-class Hockeyist {
+class Appliances {
 protected:
-	string name;
-	int age;
+	string type;
+	int serial_number;
 public:
-	Hockeyist() {}
-	Hockeyist(int age, string name);
-	~Hockeyist() {}
-	void set_age(int age);
-	void set_name(string name);
-	string get_name();
-	int get_age();
+	Appliances() {}
+	Appliances(int serial_number, string type);
+	~Appliances() {}
+	void set_serial_number(int serial_number);
+	void set_type(string type);
+	string get_type();
+	int get_serial_number();
 	void view_info();
 };
 
-class Player : virtual public Hockeyist
+class technik : virtual public Appliances
 {
 protected:
 	int weight;
 	int height;
 public:
-	Player() {}
-	~Player() {}
-	Player(int weight, int height, int age, string name);
+	technik() {}
+	~technik() {}
+	technik(int weight, int height, int serial_number, string type);
 	void set_weight(int weight);
 	void set_height(int height);
 	int get_weight();
@@ -37,50 +36,51 @@ public:
 };
 
 
-class Game :virtual public Hockeyist
+class technik_dopinfo :virtual public Appliances
 {
 protected:
-	int number_of_games;
-	int number_of_wins;
+	int voltage;
+	int power;
 public:
-	Game() {
+	technik_dopinfo() {
 
 	}
-	~Game() {
+	~technik_dopinfo() {
 
 	}
-	void set_number_of_games(int number_of_games);
-	void set_number_of_wins(int number_of_wins);
-	Game(int number_of_games, int number_of_wins, string name, int age);
-	int get_number_of_games();
-	int get_number_of_wins();
+	void set_voltage(int voltage);
+	void set_power(int power);
+	technik_dopinfo(int voltage, int power, string type, int serial_number);
+	int get_voltage();
+	int get_power();
 	void view_info();
 };
 
 
-class Trainer : public Game, public Player
+class technik_info : public technik_dopinfo, public technik
 {
 protected:
 	int price;
-	string surname;
+	string brand;
 public:
-	Trainer() {}
-	~Trainer() {}
+	technik_info() {}
+	~technik_info() {}
 	void set_price(int price);
-	void set_surname(string surname);
-	Trainer(int price, string surname, int age, string name, int number_of_games, int number_of_wins, int weight, int height);
+	void set_brand(string brand);
+	technik_info(int price, string brand, int serial_number, string type, int voltage, int power, int weight, int height);
 	int get_price();
-	string get_surname();
+	string get_brand();
 };
 
 void menu_choise() {
-	cout << "_______________MENU______________" << endl;
-	cout << "\t 1 - Work with main info " << endl;
-	cout << "\t 2 - Work with player's info " << endl;
-	cout << "\t 3 - Work with game info " << endl;
-	cout << "\t 4 - Work with trainer's info " << endl;
-	cout << "\t 0 - Exit " << endl;
+	cout << "MENU" << endl;
+	cout << "1 - Параметры техники для магазина " << endl;
+	cout << "2 - Параметры техники" << endl;
+	cout << "3 - Основные параметры о технике " << endl;
+	cout << "4 - Дополнительные параметры о технике" << endl;
+	cout << "0 - Exit " << endl;
 }
+
 void protect(int& number) {
 	while (true) {
 		cin >> number;
@@ -90,97 +90,155 @@ void protect(int& number) {
 		else {
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cout << "Input error \n Try again \n";
+			cout << "Ошибка ввода!";
 		}
 	}
 }
-void enter_mi(int& age, string& name) {
-	system("cls");
-	cout << "Enter age : ";
-	protect(age);
-	cout << "Enter name : ";
-	cin >> name;
+
+string writeWords() {
+	string slovo;
+	while (true) {
+		int Knopka;
+		char sumbol;
+		Knopka = _getch();
+		if (Knopka == 224) {
+			Knopka = _getch();
+		}
+		else
+			if (Knopka == 8) {
+				if (slovo.length() != 0) {
+					cout << '\b' << " " << '\b';
+					slovo.erase(slovo.length() - 1);
+				}
+			}
+			else
+				if (Knopka == 13 && slovo.length() != 0) {
+					break;
+				}
+				else {
+					sumbol = (char)Knopka;
+					if ((sumbol >= 'a' && sumbol <= 'z') || (sumbol >= 'A' && sumbol <= 'Z') || (sumbol == ' ')) {
+						slovo = slovo + sumbol;
+						cout << sumbol;
+					}
+				}
+	}
+	return slovo;
 }
-void enter_pi(int& age, string& name, int& weight, int& height) {
+
+/*int writeNumbers() {
+	string numbers;
+	while (true) {
+		int key;
+		key = _getch();
+		if (key == 224) {
+			key = _getch();
+		}
+		else
+			if (key == 8) {
+				if (numbers.length() != 0) {
+					cout << '\b' << " " << '\b';
+					numbers.erase(numbers.length() - 1);
+				}
+			}
+			else
+				if (key == 13 && numbers.length() != 0) break;
+				else
+					if (key >= '0' && key <= '9') {
+						numbers = numbers + (char)key;
+						cout << (char)key;
+					}
+	}
+	return stoi(numbers);
+}*/
+
+void enter_mi(int& serial_number, string& type) {
 	system("cls");
-	cout << "Enter age : ";
-	protect(age);
-	cout << "Enter name : ";
-	cin >> name;
-	cout << "Enter weight : ";
+	cout << "Серийный номер: ";
+	protect(serial_number);
+	cout << "Тип техники: ";
+	cin >> type;
+}
+void enter_pi(int& serial_number, string& type, int& weight, int& height) {
+	system("cls");
+	cout << "Серийный номер: ";
+	protect(serial_number);
+	cout << "Тип техники: ";
+	cin >> type;
+	cout << "Вес: ";
 	protect(weight);
-	cout << "Enter height : ";
+	cout << "Высота: ";
 	protect(height);
 }
-void enter_gi(int& age, string& name, int& number_of_games, int& number_of_wins) {
+void enter_gi(int& serial_number, string& type, int& voltage, int& power) {
 	system("cls");
-	cout << "Enter age : ";
-	protect(age);
-	cout << "Enter name : ";
-	cin >> name;
-	cout << "Enter weight : ";
-	cout << "Enter numeber of games : ";
-	protect(number_of_games);
-	cout << "Enter numeber of wins : ";
-	protect(number_of_wins);
+	cout << "Серийный номер: ";
+	protect(serial_number);
+	cout << "Тип техники: ";
+	cin >> type;
+	cout << "Вес: ";
+	cout << "Напряжение: ";
+	protect(voltage);
+	cout << "Мощность: ";
+	protect(power);
 }
-void enter_ti(int& age, string& name, int& weight, int& height, int& number_of_games, int& number_of_wins, int& price, string& surname) {
+void enter_ti(int& serial_number, string& type, int& weight, int& height, int& voltage, int& power, int& price, string& brand) {
 	system("cls");
-	cout << "Enter age : ";
-	protect(age);
-	cout << "Enter name : ";
-	cin >> name;
-	cout << "Enter weight : ";
+	cout << "Серийный номер: ";
+	protect(serial_number);
+	cout << "Тип техники: ";
+	cin >> type;
+	cout << "Вес: ";
 	protect(weight);
-	cout << "Enter height : ";
+	cout << "Высота: ";
 	protect(height);
-	cout << "Enter numeber of games : ";
-	protect(number_of_games);
-	cout << "Enter numeber of wins : ";
-	protect(number_of_wins);
-	cout << "Enter price : ";
+	cout << "Напряжение: ";
+	protect(voltage);
+	cout << "Мощность: ";
+	protect(power);
+	cout << "Ценник: ";
 	protect(price);
-	cout << "Enter surname : ";
-	cin >> surname;
+	cout << "Бренд: ";
+	cin >> brand;
 }
 
 
 int main() {
-	setlocale(LC_ALL, "ru");
+	setlocale(0, " ");
 	bool flag = true;
 	while (flag == true) {
-		int age, number_of_games, number_of_wins, weight, height, price;
-		string name, surname;
+		int serial_number, voltage, power, weight, height, price;
+		string type, brand;
 		menu_choise();
 		int choise;
 		protect(choise);
 		switch (choise)
 		{
 		case 1: {
-			enter_mi(age, name);
-			Hockeyist mi(age, name);
+			enter_mi(serial_number, type);
+			Appliances mi(serial_number, type);
 			mi.view_info();
 			break; }
 		case 2: {
-			enter_pi(age, name, weight, height);
-			Player pi(weight, height, age, name);
+			enter_pi(serial_number, type, weight, height);
+			technik pi(weight, height, serial_number, type);
 			pi.view_info();
 			break; }
 		case 3: {
-			enter_gi(age, name, number_of_games, number_of_wins);
-			Game gi(number_of_games, number_of_wins, name, age);
+			enter_gi(serial_number, type, voltage, power);
+			technik_dopinfo gi(voltage, power, type, serial_number);
 			gi.view_info();
 			break;
 		}
 		case 4:
-		{	enter_ti(age, name, weight, height, number_of_games, number_of_wins, price, surname);
-		Trainer ti(price, surname, age, name, number_of_games, number_of_wins, weight, height);
-		cout << "��� ����� �������� ������ : " << endl;
-		((Hockeyist)ti).view_info();
-		cout << "��� ����� ������ Game : " << endl;
-		((Game)ti).view_info();
-		cout << "��� ����� ������ Player : " << endl;
-		((Player)ti).view_info();
+		{	enter_ti(serial_number, type, weight, height, voltage, power, price, brand);
+		technik_info ti(price, brand, serial_number, type, voltage, power, weight, height);
+		cout << "Данные о технике для магазина: " << endl;
+		((Appliances)ti).view_info();
+		cout << "Основные данные о технике: " << endl;
+		((technik_dopinfo)ti).view_info();
+		cout << "Дополнительные данные о технике: " << endl;
+		((technik)ti).view_info();
 		cout << endl;
 		break;
 		}
@@ -190,7 +248,7 @@ int main() {
 			break;
 		}
 		default: {
-			cout << "No such variant \n";
+			cout << "Нет такого варианта!\n";
 			break;
 		}
 		}
@@ -198,84 +256,85 @@ int main() {
 
 }
 
-Player::Player(int weight, int height, int age, string name) :Hockeyist(age, name) {
-	this->set_weight(weight);
-	this->set_height(height);
-}
-void Player::set_weight(int weight) {
+technik::technik(int weight, int height, int serial_number, string type) :Appliances(serial_number, type) {
 	this->weight = weight;
-}
-void Player::set_height(int height) {
 	this->height = height;
 }
-int Player::get_weight() {
+void technik::set_weight(int weight) {
+	this->weight = weight;
+}
+void technik::set_height(int height) {
+	this->height = height;
+}
+int technik::get_weight() {
 	return weight;
 }
-int Player::get_height() {
+int technik::get_height() {
 	return height;
 }
-void Player::view_info() {
-	Hockeyist::view_info();
-	cout << "Player's weight : " << this->weight << endl << "Player's height : " << this->height << endl;
+void technik::view_info() {
+	Appliances::view_info();
+	cout << "Вес техники: " << this->weight << endl << "Высота техники: " << this->height << endl;
 }
 
-void Trainer::set_price(int price) {
+void technik_info::set_price(int price) {
 	this->price = price;
 }
-void Trainer::set_surname(string surname) {
-	this->surname = surname;
+void technik_info::set_brand(string brand) {
+	this->brand = brand;
 }
-Trainer::Trainer(int price, string surname, int age, string name, int number_of_games, int number_of_wins, int weight, int height) :
-	Player(weight, height, age, name), Game(number_of_games, number_of_wins, name, age), Hockeyist(age, name)
+technik_info::technik_info(int price, string brand, int serial_number, string type, int voltage, int power, int weight, int height) :
+	technik(weight, height, serial_number, type), technik_dopinfo(voltage, power, type, serial_number), Appliances(serial_number, type)
 {
-	this->set_price(price);
-	this->set_surname(surname);
+	this->price = price;
+	this->brand = brand;
 }
-int  Trainer::get_price() {
+int  technik_info::get_price() {
 	return price;
 }
-string  Trainer::get_surname() {
-	return surname;
+string  technik_info::get_brand() {
+	return brand;
 }
 
-Hockeyist::Hockeyist(int age, string name) {
-	this->set_age(age);
-	this->set_name(name);
+Appliances::Appliances(int serial_number, string type) {
+	this->serial_number = serial_number;
+	this->type = type;
 }
-void Hockeyist::set_age(int age) {
-	this->age = age;
+void Appliances::set_serial_number(int serial_number) {
+	this->serial_number = serial_number;
 }
-void Hockeyist::set_name(string name) {
-	this->name = name;
+void Appliances::set_type(string type) {
+	this->type = type;
 }
-string Hockeyist::get_name() {
-	return name;
+string Appliances::get_type() {
+	return type;
 }
-int Hockeyist::get_age() {
-	return age;
+int Appliances::get_serial_number() {
+	return serial_number;
 }
-void Hockeyist::view_info() {
-	cout << "Player's name : " << this->get_name() << endl << "Player's age : " << this->get_age() << endl;
+void Appliances::view_info() {
+	cout << "Тип техники: " << this->get_type() << endl << "Серийный номер: " << this->get_serial_number() << endl;
 }
 
 
-void Game::set_number_of_games(int number_of_games) {
-	this->number_of_games = number_of_games;
+void technik_dopinfo::set_voltage(int voltage) {
+	this->voltage = voltage;
 }
-void Game::set_number_of_wins(int number_of_wins) {
-	this->number_of_wins = number_of_wins;
+void technik_dopinfo::set_power(int power) {
+	this->power = power;
 }
-Game::Game(int number_of_games, int number_of_wins, string name, int age) :Hockeyist(age, name) {
-	this->set_number_of_games(number_of_games);
-	this->set_number_of_wins(number_of_wins);
+technik_dopinfo::technik_dopinfo(int voltage, int power, string type, int serial_number) :Appliances(serial_number, type) {
+	this->voltage = voltage;
+	this->power = power;
 }
-int Game::get_number_of_games() {
-	return number_of_games;
+int technik_dopinfo::get_voltage() {
+	return voltage;
 }
-int Game::get_number_of_wins() {
-	return number_of_wins;
+int technik_dopinfo::get_power() {
+	return power;
 }
-void Game::view_info() {
-	Hockeyist::view_info();
-	cout << "Player's number of wins : " << this->get_number_of_wins() << endl << "Player's number of games : " << this->get_number_of_games() << endl;
+void technik_dopinfo::view_info() {
+	Appliances::view_info();
+	cout << "Мощность: " << this->get_power() << endl << "Напряжение: " << this->get_voltage() << endl;
 }
+
